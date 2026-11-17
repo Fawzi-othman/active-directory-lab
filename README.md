@@ -1,122 +1,124 @@
+# Active Directory & Windows Security Lab
 
-Project 3 — Active Directory & Windows Security Lab
+**Project 3 | Windows Server 2022 | Active Directory | Windows Security**
 
-I built a small Windows domain environment using VMware with a Windows Server 2022 domain controller and a Windows 11 workstation.
+## 1. Project Overview
 
-LAB SETUP
+Built a Windows domain environment using VMware Workstation, Windows Server 2022, and a Windows 11 workstation.
 
-DC01 — Windows Server 2022
-CLIENT01 — Windows 11
-Domain — lab.local
-Network — VMware NAT
-DC01 IP — 192.168.136.131
+The project focused on Active Directory deployment, DNS configuration, domain joining, Group Policy, security auditing, Windows Firewall, and endpoint hardening.
 
-WHAT I DID
+## 2. Lab Environment
 
-Active Directory
+| Component | Configuration |
+|---|---|
+| Domain Controller | Windows Server 2022 (DC01) |
+| Client | Windows 11 (CLIENT01) |
+| Domain | lab.local |
+| Domain Controller IP | 192.168.136.131 |
+| Network | VMware NAT |
+| Virtualization | VMware Workstation |
 
-Installed Active Directory Domain Services and created the lab.local domain.
+## 3. Active Directory Configuration
 
-Created these OUs:
+- Installed Active Directory Domain Services.
+- Created the `lab.local` domain.
+- Created Organizational Units: Admins, Workstations, Servers, Security Groups.
+- Moved CLIENT01 into the Workstations OU.
+- Created domain user: `doon.admin`.
+- Created groups: Employees and IT-Admins.
 
-Admins
-Workstations
-Servers
-Security Groups
-
-CLIENT01 was moved into the Workstations OU.
-
-Created the following domain account and groups:
-
-User: doon.admin
-Groups: Employees, IT-Admins
-
-DNS AND DOMAIN JOIN
+## 4. DNS & Domain Join
 
 Configured CLIENT01 to use DC01 as its DNS server.
 
-Tested DNS from CLIENT01 using:
+Tested DNS resolution:
 
+```cmd
 nslookup lab.local
+```
 
-The domain resolved to:
+Domain resolution: `192.168.136.131`
 
-192.168.136.131
+Successfully joined CLIENT01 to the `lab.local` domain.
 
-CLIENT01 was then joined to the lab.local domain.
+## 5. Group Policy
 
-GROUP POLICY
+Created a GPO named **Workstation Security Baseline** and linked it to the Workstations OU.
 
-Created a GPO called:
+Configured:
+- Password policies
+- Account lockout policies
+- Security auditing
+- Workstation security settings
 
-Workstation Security Baseline
+Verified applied policies using:
 
-The GPO was linked to the Workstations OU.
-
-Configured password, account lockout, security auditing, and workstation security settings.
-
-Verified the policy from CLIENT01 using:
-
+```cmd
 gpresult /scope computer /r
+```
 
-The output showed:
+Confirmed:
+- Workstation Security Baseline
+- Default Domain Policy
 
-Workstation Security Baseline
-Default Domain Policy
+## 6. Security Auditing & Windows Firewall
 
-as applied policies.
+**Advanced Security Auditing**
 
-SECURITY AUDITING
+Configured:
+- Credential Validation
+- Kerberos Authentication Service
+- Logon
+- Logoff
+- Account Lockout
+- User Account Management
+- Security Group Management
+- Audit Policy Change
 
-Configured Advanced Audit Policy for:
+Verified using:
 
-Credential Validation
-Kerberos Authentication Service
-Logon
-Logoff
-Account Lockout
-User Account Management
-Security Group Management
-Audit Policy Change
-
-Checked the configuration using:
-
+```cmd
 auditpol /get /category:*
+```
 
-Also checked the Windows Security log using Event Viewer.
+Reviewed Windows Security logs through Event Viewer.
 
-Event ID 4634 was recorded for LAB\doon.admin.
+Event ID **4634** was recorded for `LAB\doon.admin`.
 
-WINDOWS FIREWALL
+**Windows Defender Firewall**
 
-Checked Windows Defender Firewall on CLIENT01.
+- Domain Profile enabled on CLIENT01.
+- Inbound connections blocked by default.
+- Outbound connections allowed by default.
+- Firewall settings controlled through Group Policy.
 
-The Domain Profile was enabled.
+## 7. Endpoint Hardening & Troubleshooting
 
-Inbound connections were blocked by default and outbound connections were allowed by default.
+**Endpoint Hardening**
+- Disabled the local Guest account on CLIENT01.
 
-Firewall settings were also controlled through Group Policy.
+**Troubleshooting**
 
-ENDPOINT HARDENING
+The initial domain join failed because the credentials entered were incorrect. After correcting the credentials, CLIENT01 successfully joined `lab.local`.
 
-The local Guest account was disabled on CLIENT01.
-
-TROUBLESHOOTING
-
-The first attempt to join CLIENT01 to the domain failed because the credentials entered were incorrect.
-
-After correcting the credentials, CLIENT01 successfully joined lab.local.
-
-EVIDENCE
-
-The screenshots in this project are from my actual lab.
-
-The full evidence report is available here:
-
-[Project 3 Evidence Report](./PROJECT3_AD_SECURITY_EVIDENCE_REPORT_2026.pdf)
-
-RESULT
+## 8. Results & Evidence
 
 The lab was completed successfully.
 
-CLIENT01 is joined to the lab.local domain, located in the Workstations OU, receiving the workstation security GPO, generating security audit events, and using the configured Windows Firewall and endpoint security settings.
+- CLIENT01 joined to the `lab.local` domain.
+- CLIENT01 placed in the Workstations OU.
+- Workstation Security Baseline GPO applied.
+- Security audit events generated.
+- Windows Defender Firewall configured.
+- Local Guest account disabled.
+
+### Technical Evidence Report
+
+The report contains screenshots from the actual lab documenting Active Directory, DNS, Group Policy, security auditing, Windows Firewall, and endpoint configuration.
+
+📄 **[View Project 3 — Active Directory Evidence Report](PROJECT3_AD_SECURITY_EVIDENCE_REPORT_2026.pdf)**
+
+---
+
+*Windows domain administration and security configuration using VMware Workstation.*
